@@ -1,0 +1,114 @@
+:root {
+  --open: 0;
+  --page-h: 100svh;
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --page-h: 100dvh;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+body.open {
+  --open: 1;
+}
+
+.cover,
+.blank-page {
+  height: var(--page-h);
+  overflow: hidden;
+}
+
+.cover {
+  position: relative;
+  background: #ffffff;
+}
+
+.cover-box,
+.cover-bg,
+.lid {
+  position: absolute;
+  inset: 0;
+}
+
+.cover-box {
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+}
+
+.cover-bg,
+.lid {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.cover-bg {
+  z-index: 1;
+  background-image: url("photos/portfolio/cover-open-back.png");
+}
+
+.lid {
+  z-index: 2;
+  background-image: url("photos/portfolio/cover-open-front.png");
+  clip-path: polygon(0 0, 100% 0, 100% 35%, 86% 54%, 14% 54%, 0 35%);
+  box-shadow: 0 24px 50px rgba(55, 30, 39, .2);
+  transform: translateY(calc(var(--open) * -58vh)) scaleY(calc(1 - var(--open) * .12));
+  transform-origin: 50% 54%;
+  transition: transform 900ms cubic-bezier(.19, 1, .22, 1);
+}
+
+.lid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,.08), transparent 42%, rgba(75,34,47,.1));
+  mix-blend-mode: multiply;
+}
+
+.cover-title {
+  position: absolute;
+  left: 50%;
+  top: 33%;
+  z-index: 3;
+  width: min(90vw, 900px);
+  color: #ffffff;
+  font: 900 clamp(34px, 6.4vw, 112px) / 1 Georgia, "Times New Roman", serif;
+  text-align: center;
+  text-shadow: 0 3px 0 rgba(147, 66, 88, .28), 0 14px 30px rgba(118, 47, 70, .24);
+  transform: translate(-50%, -50%) translateY(calc(var(--open) * -58vh)) scaleY(calc(1 - var(--open) * .12));
+  transition: transform 900ms cubic-bezier(.19, 1, .22, 1);
+  pointer-events: none;
+}
+
+.cover-btn {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border: 0;
+  color: transparent;
+  background: transparent;
+  cursor: grab;
+}
+
+.cover-btn:active {
+  cursor: grabbing;
+}
+
+.blank-page {
+  background: #ffffff;
+}
