@@ -59,12 +59,12 @@ body.open {
 
 .cover-bg {
   z-index: 1;
-  background-image: url("photos/portfolio/cover-open-back.png");
+  background-image: url("cover-open-back.png");
 }
 
 .lid {
   z-index: 2;
-  background-image: url("photos/portfolio/cover-open-front.png");
+  background-image: url("cover-open-front.png");
   clip-path: polygon(0 0, 100% 0, 100% 35%, 86% 54%, 14% 54%, 0 35%);
   box-shadow: 0 24px 50px rgba(55, 30, 39, .2);
   transform: translateY(calc(var(--open) * -58vh)) scaleY(calc(1 - var(--open) * .12));
