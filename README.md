@@ -1,12 +1,21 @@
-# Zeynep's Portfolio Cover
+# Zeynep's Portfolio 2
 
-This is the entrance cover page for Zeynep's Portfolio.
+A three-page portfolio draft.
 
-The first page shows the portfolio cover. When the cover is opened, the page moves to a blank white second page. When you scroll back to the first page, the cover resets to its closed state.
+## Flow
+
+- Cover page with an opening animation
+- About Me page with a camera photo section
+- Blank white page reserved for future content
+
+Scrolling is locked between pages until the intended interaction happens: open the cover to reach About Me, then press the camera button to reach the blank page.
 
 ## Files
 
-- `index.html` - page structure
-- `styles.css` - cover design and animation styles
-- `app.js` - cover interaction and page transition
-- `photos/portfolio/` - cover images
+- `index.html`
+- `styles.css`
+- `app.js`
+- `assets/portfolio/cover-open-front.png`
+- `assets/portfolio/cover-open-back.png`
+- `assets/portfolio/camera-cutout.png`
+- `assets/portfolio/zeynep-camera.jpg`

@@ -1,39 +1,43 @@
 :root {
+  --ink: #2b1b25;
   --open: 0;
   --page-h: 100svh;
+  --pad: clamp(20px, 5vmin, 70px);
 }
 
 @supports (height: 100dvh) {
-  :root {
-    --page-h: 100dvh;
-  }
+  :root { --page-h: 100dvh; }
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
+  min-height: var(--page-h);
   overflow-x: hidden;
+  color: var(--ink);
+  background: #f7dce8;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-body.open {
-  --open: 1;
-}
+body.open { --open: 1; }
 
-.cover,
-.blank-page {
-  height: var(--page-h);
+button { font: inherit; }
+
+.page {
+  position: relative;
+  min-height: var(--page-h);
+  display: grid;
+  align-items: center;
   overflow: hidden;
+  padding: var(--pad);
 }
 
 .cover {
-  position: relative;
+  height: var(--page-h);
+  padding: 0;
   background: #ffffff;
 }
 
@@ -59,12 +63,12 @@ body.open {
 
 .cover-bg {
   z-index: 1;
-  background-image: url("cover-open-back.png");
+  background-image: url("assets/portfolio/cover-open-back.png");
 }
 
 .lid {
   z-index: 2;
-  background-image: url("cover-open-front.png");
+  background-image: url("assets/portfolio/cover-open-front.png");
   clip-path: polygon(0 0, 100% 0, 100% 35%, 86% 54%, 14% 54%, 0 35%);
   box-shadow: 0 24px 50px rgba(55, 30, 39, .2);
   transform: translateY(calc(var(--open) * -58vh)) scaleY(calc(1 - var(--open) * .12));
@@ -86,6 +90,7 @@ body.open {
   top: 33%;
   z-index: 3;
   width: min(90vw, 900px);
+  margin: 0;
   color: #ffffff;
   font: 900 clamp(34px, 6.4vw, 112px) / 1 Georgia, "Times New Roman", serif;
   text-align: center;
@@ -105,10 +110,127 @@ body.open {
   cursor: grab;
 }
 
-.cover-btn:active {
-  cursor: grabbing;
+.cover-btn:active { cursor: grabbing; }
+
+.about {
+  height: var(--page-h);
+  grid-template-columns: minmax(280px, .9fr) minmax(320px, 1.1fr);
+  gap: clamp(18px, 5vmin, 86px);
+  background: radial-gradient(circle at 74% 50%, rgba(247, 220, 232, .42), transparent 34rem), linear-gradient(135deg, #fffdf9, #fff5fa 55%, #fbfff3);
+}
+
+.letters {
+  display: grid;
+  grid-template-columns: repeat(5, max-content);
+  gap: clamp(5px, .85vmin, 8px);
+  width: max-content;
+  max-width: 100%;
+  margin: 0 0 clamp(12px, 2vmin, 22px);
+}
+
+.letters span {
+  display: inline-block;
+  padding: 4px 8px;
+  color: var(--c);
+  background: var(--b);
+  font: 900 clamp(32px, min(5.8vw, 8.4vh), 94px) / .86 Georgia, "Times New Roman", serif;
+  transform: rotate(var(--r));
+  box-shadow: 0 8px 18px rgba(70, 45, 55, .08);
+}
+
+.camera {
+  position: relative;
+  width: min(100%, 64vmin);
+  height: min(64vmin, calc(var(--page-h) - 150px));
+  aspect-ratio: 1;
+  background: radial-gradient(circle at 70% 52%, rgba(247, 220, 232, .72), transparent 18rem);
+}
+
+.camera-img {
+  position: absolute;
+  right: 2%;
+  bottom: clamp(-48px, -5.5vmin, -14px);
+  width: min(53vmin, 88%);
+  aspect-ratio: 1;
+  background: url("assets/portfolio/camera-cutout.png") center / contain no-repeat;
+  filter: drop-shadow(0 22px 36px rgba(70,45,55,.12));
+}
+
+.screen {
+  position: absolute;
+  left: 14.3%;
+  top: 33.5%;
+  width: 53.65%;
+  height: 37.4%;
+  border-radius: 3px;
+  background: url("assets/portfolio/zeynep-camera.jpg") 40% center / 110% auto no-repeat, linear-gradient(135deg, #fff, #fff3f8);
+}
+
+.snap {
+  position: absolute;
+  left: 70.8%;
+  top: 18.5%;
+  z-index: 2;
+  width: 12.7%;
+  height: 4.8%;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  color: transparent;
+  background: transparent;
+  cursor: pointer;
+  transform: rotate(-2deg);
+}
+
+.snap::after {
+  content: "";
+  position: absolute;
+  inset: -42% -18%;
+  border-radius: inherit;
+  opacity: 0;
+  background: linear-gradient(105deg, transparent 0 18%, rgba(255,255,255,.86) 35%, rgba(255,220,235,.5) 48%, transparent 70%);
+  transform: translateX(-42%) skewX(-12deg);
+  transition: opacity 180ms ease, transform 220ms ease;
+}
+
+.snap:hover::after {
+  opacity: 1;
+  transform: translateX(24%) skewX(-12deg);
 }
 
 .blank-page {
+  height: var(--page-h);
   background: #ffffff;
+}
+
+@media (max-width: 980px) {
+  .about {
+    grid-template-columns: 1fr;
+    align-content: center;
+    gap: 20px;
+  }
+
+  .letters {
+    margin-inline: auto;
+    justify-content: center;
+  }
+
+  .camera {
+    width: min(76vw, 500px);
+    height: min(52svh, 500px);
+    margin: 0 auto;
+  }
+
+  .camera-img {
+    right: 50%;
+    bottom: clamp(-58px, -7vmin, -20px);
+    width: min(50vmin, 500px);
+    transform: translateX(50%);
+  }
+}
+
+@media (max-width: 620px) {
+  .page { padding: 26px 14px; }
+  .cover { padding: 0; }
+  .camera { width: min(88vw, 430px); height: min(44svh, 430px); }
 }
