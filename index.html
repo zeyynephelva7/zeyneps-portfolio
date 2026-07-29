@@ -35,7 +35,18 @@
     </div>
   </section>
 
-  <section class="page blank-page" id="blankPage"></section>
+  <section class="page stage-page" id="stagePage">
+    <div class="stage" id="stage">
+      <div class="beam"></div>
+      <div class="person"></div>
+      <button class="round-btn light-btn" id="lightBtn" type="button" aria-label="Toggle light"></button>
+      <button class="round-btn mode-btn" id="modeBtn" type="button" aria-label="Change mode"></button>
+    </div>
+  </section>
+
+  <section class="page blank-page" id="blankPage" aria-label="Blank page"></section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="app.js"></script>
 </body>

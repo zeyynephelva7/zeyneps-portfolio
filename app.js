@@ -1,15 +1,27 @@
 const root = document.documentElement;
+const body = document.body;
 const cover = document.querySelector("#cover");
 const about = document.querySelector("#about");
 const coverBtn = document.querySelector("#coverBtn");
 const snapBtn = document.querySelector("#snapBtn");
-const blankPage = document.querySelector("#blankPage");
+const stagePage = document.querySelector("#stagePage");
+const stage = document.querySelector("#stage");
+const modeBtn = document.querySelector("#modeBtn");
+const lightBtn = document.querySelector("#lightBtn");
+const toast = document.querySelector("#toast");
 
 let startY = 0;
 let dragging = false;
 let coverOpen = false;
 let coverLeft = false;
 let photoTaken = false;
+let mode = 0;
+
+const looks = [
+  ["character-1.png", "sport mode"],
+  ["character-2.png", "formal mode"],
+  ["character-3.png", "sleep mode"]
+];
 
 function setOpen(value) {
   root.style.setProperty("--open", value.toFixed(2));
@@ -18,7 +30,7 @@ function setOpen(value) {
 function openCover() {
   if (coverOpen) return;
   coverOpen = true;
-  document.body.classList.add("open");
+  body.classList.add("open");
   setOpen(1);
   setTimeout(() => about.scrollIntoView({ behavior: "smooth" }), 760);
 }
@@ -26,8 +38,15 @@ function openCover() {
 function resetCover() {
   coverOpen = false;
   dragging = false;
-  document.body.classList.remove("open");
+  body.classList.remove("open");
   setOpen(0);
+}
+
+function showToast(text) {
+  toast.textContent = text;
+  toast.classList.add("on");
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => toast.classList.remove("on"), 1500);
 }
 
 function stopEarlyScroll(event) {
@@ -90,14 +109,41 @@ snapBtn.addEventListener("click", () => {
     duration: 300,
     easing: "ease-out"
   });
-  setTimeout(() => blankPage.scrollIntoView({ behavior: "smooth" }), 420);
+  setTimeout(() => stagePage.scrollIntoView({ behavior: "smooth" }), 420);
 });
 
-new IntersectionObserver(([entry]) => {
-  if (!entry.isIntersecting) {
-    coverLeft = true;
-  } else if (coverLeft) {
-    coverLeft = false;
-    resetCover();
-  }
-}, { threshold: .34 }).observe(cover);
+modeBtn.addEventListener("click", () => {
+  mode = (mode + 1) % looks.length;
+  root.style.setProperty("--stage-photo", `url("${looks[mode][0]}")`);
+  showToast(looks[mode][1]);
+});
+
+lightBtn.addEventListener("click", () => {
+  stage.classList.toggle("dark");
+  showToast(stage.classList.contains("dark") ? "light off" : "light on");
+});
+
+const watcher = new IntersectionObserver((items) => {
+  items.forEach((item) => {
+    item.target.classList.toggle("show", item.isIntersecting);
+
+    if (item.target === cover) {
+      if (!item.isIntersecting) coverLeft = true;
+      if (item.isIntersecting && coverLeft) resetCover();
+    }
+  });
+}, { threshold: .34 });
+
+watcher.observe(cover);
+watcher.observe(stagePage);
+
+function moveStageLight() {
+  const box = stagePage.getBoundingClientRect();
+  const scrollRoom = Math.max(1, box.height - window.innerHeight);
+  const amount = Math.min(Math.max(-box.top / scrollRoom, 0), 1);
+  root.style.setProperty("--light", amount.toFixed(3));
+}
+
+moveStageLight();
+window.addEventListener("scroll", moveStageLight, { passive: true });
+window.addEventListener("resize", moveStageLight);
